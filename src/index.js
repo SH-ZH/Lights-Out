@@ -1,17 +1,35 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import './stylesheet/index.css';
+import UnitStatCalculator from './components/UnitStatCalculator.js'
+import LanguageChanger from './components/LanguageChanger.js';
+
+class Calculator extends React.Component {
+	constructor(props) {
+		super(props);
+		this.updateLanguage = this.updateLanguage.bind(this);
+		this.state = {
+			language: "en"
+		};
+	}
+	
+	updateLanguage(lang) {
+		this.setState({ language: lang });
+	}
+  
+	render() {		
+		return(
+			<div class='calculator'>
+				<LanguageChanger onInput={this.updateLanguage} />
+				<UnitStatCalculator language={this.state.language} />			
+			</div>
+		)
+	}
+}
+
+// ========================================
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <Calculator />,
   document.getElementById('root')
 );
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
