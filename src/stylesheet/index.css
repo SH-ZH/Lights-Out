@@ -1,24 +1,3 @@
-input { 
-	border: none;
-	width: 100%;
-}
-
-[colored='true'] {
-	background-color: #E6E6FA;
-}
-
-input[readonly="readonly"] {
-	background-color: #E6E6FA;	
-}
-
-#unit_table_end td {
-	border: 1px solid #dee2e6;	
-}
-
-#enchant_stats td, #unit_stat_others td {
-	border-right: 1px solid #dee2e6;
-}
-
 body {
   font: 14px "Century Gothic", Futura, sans-serif;
   margin: 20px;
