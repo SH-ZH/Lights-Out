@@ -4,17 +4,17 @@ import './stylesheet/index.css';
 
 function Square(props) {
 	return (
-	  <button className="square" onClick={props.onClick}>
-		{props.value}
+	  <button className="square" onClick={props.onClick} color={props.value}>
+		
 	  </button>
 	);
   }
-  
+
 class Board extends React.Component {
 	renderSquare(i) {
 		return (
 		<Square
-			value={this.props.squares[i]}
+			value={this.props.board[i]}
 			onClick={() => this.props.onClick(i)}
 		/>
 		);
@@ -66,27 +66,64 @@ class Board extends React.Component {
   class Game extends React.Component {
 	constructor(props) {
 	  super(props);
+
+	  this.resetGame = this.resetGame.bind(this);
+	  this.checkWin = this.checkWin.bind(this);
+
 	  this.state = {
-		history: [
-		  {
-			squares: Array(25).fill(null)
-		  }
-		]
+		gameBoard: Array(25).fill("null"),
+		moveNumber: 0
 	  };
 	}
 
+	componentDidMount() {
+		this.resetGame();
+	}
+
+	resetGame() {
+		this.setState({ 
+			gameBoard: randomGeneration(),
+			moveNumber: 0			
+		});
+	}
+
+	checkWin() {
+		let currentBoard = this.state.gameBoard;
+
+		winCheck(currentBoard);
+	}
+
 	handleClick(i) {
+		const newCount = this.state.moveNumber + 1;
+
+		const currentBoard = this.state.gameBoard;
+		const newBoard = createNewBoard(currentBoard, i);
+
+		this.setState({
+			gameBoard: newBoard,
+			moveNumber: newCount
+		})
 		console.log("AAAAAAAAAAA");
 	  }	
   
 	render() {
-		const history = this.state.history;
-		const current = history[0];
+		const currentBoard = this.state.gameBoard;
 
 		return (
 			<div className="game">
 				<div className="game-board">
-				<Board squares={current.squares} onClick={i => this.handleClick(i)} />
+					<Board board={currentBoard} onClick={i => this.handleClick(i)} />
+				</div>
+				<div className="game-other">
+					<button className="game-reset" onClick={this.resetGame}>
+						Reset to New Game
+					</button>	
+					<button className="game-win" onClick={this.checkWin}>
+						Test: Check Game Win
+					</button>	
+					<div className="moveCount">
+						Move Count: {this.state.moveNumber}
+					</div>					
 				</div>
 			</div>
 		);
@@ -97,23 +134,35 @@ class Board extends React.Component {
   
   ReactDOM.render(<Game />, document.getElementById("root"));
   
-  function calculateWinner(squares) {
-	const lines = [
-	  [0, 1, 2],
-	  [3, 4, 5],
-	  [6, 7, 8],
-	  [0, 3, 6],
-	  [1, 4, 7],
-	  [2, 5, 8],
-	  [0, 4, 8],
-	  [2, 4, 6]
-	];
-	for (let i = 0; i < lines.length; i++) {
-	  const [a, b, c] = lines[i];
-	  if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-		return squares[a];
-	  }
+function randomGeneration() {
+	let newGameState = new Array(25);
+
+	for (let v = 0; v < 25; v++) {
+		let ranNum = Math.round(Math.random());
+		if (ranNum == 0) {
+			newGameState[v] = "white";
+		}
+		else {
+			newGameState[v] = "black";			
+		}
 	}
-	return null;
-  }
-  
+
+	return newGameState;
+}
+
+function createNewBoard(currentBoard, clickedSquare) {
+	let newGameState = new Array(25).fill("white");
+
+	console.log(clickedSquare);
+
+	return newGameState;
+}
+
+function winCheck(gameBoard) {
+	if (gameBoard.includes("black")) {
+		console.log("False");
+	}
+	else {
+		console.log("Win");
+	}
+}
