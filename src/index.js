@@ -1,113 +1,64 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './stylesheet/index.css';
+import Board from './components/Board.js';
+import InstanceWin from './components/InstanceWin.js';
+import ResetGame from './components/ResetGame.js';
+import VictoryAndRestart from './components/VictoryAndRestart.js';
+import StepCounter from './components/StepCounter.js';
 
-function Square(props) {
-	return (
-	  <button className="square" onClick={props.onClick} color={props.value}>
-		
-	  </button>
-	);
-  }
-
-class Board extends React.Component {
-	renderSquare(i) {
-		return (
-		<Square
-			value={this.props.board[i]}
-			onClick={() => this.props.onClick(i)}
-		/>
-		);
-	}
-
-	render() {
-		return (
-		<div>
-			<div className="board-row">
-				{this.renderSquare(0)}
-				{this.renderSquare(1)}
-				{this.renderSquare(2)}
-				{this.renderSquare(3)}
-				{this.renderSquare(4)}			
-			</div>
-			<div className="board-row">
-				{this.renderSquare(5)}
-				{this.renderSquare(6)}
-				{this.renderSquare(7)}
-				{this.renderSquare(8)}
-				{this.renderSquare(9)}			
-			</div>
-			<div className="board-row">
-				{this.renderSquare(10)}
-				{this.renderSquare(11)}
-				{this.renderSquare(12)}
-				{this.renderSquare(13)}
-				{this.renderSquare(14)}			
-			</div>
-			<div className="board-row">
-				{this.renderSquare(15)}
-				{this.renderSquare(16)}
-				{this.renderSquare(17)}
-				{this.renderSquare(18)}
-				{this.renderSquare(19)}			
-			</div>
-			<div className="board-row">
-				{this.renderSquare(20)}
-				{this.renderSquare(21)}
-				{this.renderSquare(22)}
-				{this.renderSquare(23)}
-				{this.renderSquare(24)}			
-			</div>						
-		</div>
-		);
-	}
-}
-  
-  class Game extends React.Component {
+class Game extends React.Component {
 	constructor(props) {
-	  super(props);
+		super(props);
 
-	  this.resetGame = this.resetGame.bind(this);
-	  this.checkWin = this.checkWin.bind(this);
-
-	  this.state = {
-		gameBoard: Array(25).fill("null"),
-		moveNumber: 0
-	  };
+		this.state = {
+			gameBoard: Array(25).fill("null"),
+			moveNumber: 0,
+			win: "false"
+		};
 	}
 
 	componentDidMount() {
 		this.resetGame();
 	}
 
-	resetGame() {
-		this.setState({ 
-			gameBoard: randomGeneration(),
-			moveNumber: 0			
-		});
-	}
-
-	checkWin() {
-		let currentBoard = this.state.gameBoard;
-
-		winCheck(currentBoard);
-	}
-
 	handleClick(i) {
 		const newCount = this.state.moveNumber + 1;
 
 		const currentBoard = this.state.gameBoard;
-		const newBoard = createNewBoard(currentBoard, i);
+		const newBoard = makeMove(currentBoard, i);
+		const won = winCheck(newBoard);
 
 		this.setState({
 			gameBoard: newBoard,
-			moveNumber: newCount
-		})
-		console.log("AAAAAAAAAAA");
-	  }	
-  
+			moveNumber: newCount,
+			win: won
+		})		
+	}	
+
+	resetGame() {
+		this.setState({ 
+			gameBoard: randomGeneration(),
+			moveNumber: 0,
+			win: "false"
+		});
+	}
+
+	instanceWin() {
+		const winBoard = Array(25).fill("white");
+		const won = winCheck(winBoard);
+
+		this.setState({ 
+			gameBoard: winBoard,
+			win: won
+		});
+
+	}
+
 	render() {
 		const currentBoard = this.state.gameBoard;
+		const currentSteps = this.state.moveNumber;
+		const currentWin = this.state.win;
 
 		return (
 			<div className="game">
@@ -115,31 +66,26 @@ class Board extends React.Component {
 					<Board board={currentBoard} onClick={i => this.handleClick(i)} />
 				</div>
 				<div className="game-other">
-					<button className="game-reset" onClick={this.resetGame}>
-						Reset to New Game
-					</button>	
-					<button className="game-win" onClick={this.checkWin}>
-						Test: Check Game Win
-					</button>	
-					<div className="moveCount">
-						Move Count: {this.state.moveNumber}
-					</div>					
+					<ResetGame onClick={() => this.resetGame()} />
+					<InstanceWin onClick={() => this.instanceWin()} />
+					<StepCounter steps={currentSteps} />
 				</div>
+				<VictoryAndRestart win={currentWin} steps={currentSteps} onClick={() => this.resetGame()} />
 			</div>
 		);
 	}
-  }
+}
   
-  // ========================================
+// ========================================
   
-  ReactDOM.render(<Game />, document.getElementById("root"));
+ReactDOM.render(<Game />, document.getElementById("root"));
   
 function randomGeneration() {
 	let newGameState = new Array(25);
 
 	for (let v = 0; v < 25; v++) {
 		let ranNum = Math.round(Math.random());
-		if (ranNum == 0) {
+		if (ranNum === 0) {
 			newGameState[v] = "white";
 		}
 		else {
@@ -150,19 +96,48 @@ function randomGeneration() {
 	return newGameState;
 }
 
-function createNewBoard(currentBoard, clickedSquare) {
-	let newGameState = new Array(25).fill("white");
+function makeMove(currentBoard, clickedSquare) {
+	let newGameState = currentBoard;
 
-	console.log(clickedSquare);
+	// Toggle clicked square
+	newGameState[clickedSquare] = toggleSquare(currentBoard[clickedSquare]);
+
+	// Toggle left square
+	if (clickedSquare % 5 !== 0) {
+		newGameState[clickedSquare - 1] = toggleSquare(currentBoard[clickedSquare - 1]);
+	}
+	//Toggle above square
+	if (clickedSquare - 5 >= 0) {
+		newGameState[clickedSquare - 5] = toggleSquare(currentBoard[clickedSquare - 5]);
+	}	
+
+	// Toggle right square
+	if (clickedSquare % 5 !== 4) {
+		newGameState[clickedSquare + 1] = toggleSquare(currentBoard[clickedSquare + 1]);
+	}
+
+	// Toggle bottom square
+	if (clickedSquare + 5 <= 24) {
+		newGameState[clickedSquare + 5] = toggleSquare(currentBoard[clickedSquare + 5]);
+	}	
 
 	return newGameState;
 }
 
-function winCheck(gameBoard) {
-	if (gameBoard.includes("black")) {
-		console.log("False");
+function toggleSquare(color) {
+	if (color === "white") {
+		return "black";		
 	}
 	else {
-		console.log("Win");
+		return "white";
+	}
+}
+
+function winCheck(gameBoard) {
+	if (gameBoard.includes("black")) {
+		return "false"
+	}
+	else {
+		return "true"
 	}
 }
