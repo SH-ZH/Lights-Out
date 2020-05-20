@@ -7,6 +7,7 @@ import ResetGame from '../components/ResetGame.js';
 import Square from '../components/Square.js';
 import StepCounter from '../components/InstanceWin.js';
 import VictoryAndRestart from '../components/VictoryAndRestart.js';
+import TitleMessage from './components/TitleMessage.js';
 
 import makeMove from '../HelperFunction/makeMove.js';
 import randomGeneration from '../HelperFunction/randomGeneration.js';
@@ -18,6 +19,11 @@ test('Render Board', () => {
 
     const div = document.createElement('div');
     ReactDOM.render(<Board board={testBoard} />, div);
+});
+
+test('Render TitleMessage', () => {
+    const div = document.createElement('div');
+    ReactDOM.render(<TitleMessage />, div);
 });
 
 test('Render CloseMessage', () => {

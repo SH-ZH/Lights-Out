@@ -4,9 +4,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Getting Started
 
-Extract lights-out.tar from lights-out.tar.gz. Then extract the files from lights-out.tar.  
-As this is a bare repository, run "git clone lights-out [folder name]", where the folder name can be anything of choice.  
-After entering the app directory, run "npm install" to install the modules used by the app.
+While in the app directory, run "npm install" to install the modules used by the app.
 
 ## To Run App
 

@@ -6,6 +6,7 @@ import InstanceWin from './components/InstanceWin.js';
 import ResetGame from './components/ResetGame.js';
 import VictoryAndRestart from './components/VictoryAndRestart.js';
 import StepCounter from './components/StepCounter.js';
+import TitleMessage from './components/TitleMessage.js';
 
 import randomGeneration from './HelperFunction/randomGeneration.js';
 import makeMove from './HelperFunction/makeMove.js';
@@ -72,6 +73,7 @@ class Game extends React.Component {
 
 		return (
 			<div className="game">
+				<TitleMessage />
 				<div className="game-board">
 					<Board board={currentBoard} onClick={i => this.handleClick(i)} />
 				</div>

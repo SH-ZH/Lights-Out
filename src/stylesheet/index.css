@@ -75,3 +75,8 @@ body {
 .game-win {
   display: block;
 }
+
+.title {
+  margin-bottom: 40px;
+  font-size: xx-large;
+}
