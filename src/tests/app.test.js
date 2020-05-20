@@ -7,7 +7,7 @@ import ResetGame from '../components/ResetGame.js';
 import Square from '../components/Square.js';
 import StepCounter from '../components/InstanceWin.js';
 import VictoryAndRestart from '../components/VictoryAndRestart.js';
-import TitleMessage from './components/TitleMessage.js';
+import TitleMessage from '../components/TitleMessage.js';
 
 import makeMove from '../HelperFunction/makeMove.js';
 import randomGeneration from '../HelperFunction/randomGeneration.js';
