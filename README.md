@@ -9,7 +9,8 @@ Upon extracting the files, run "npm install" to install the modules used by the 
 ## To Run App
 
 In the project directory, you can run the file using "npm start".   
-Once it starts up, you may access the app at localhost:3000 (it may be automatically opened in your internet browser).
+Once it starts up, you may access the app at localhost:3000 (it may be automatically opened in your internet browser).  
+A button is available to immediately clear the board and win the game, as it is said that there are some initial states that cannot be solved.
 
 ## `Run Tests
 
