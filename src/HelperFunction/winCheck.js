@@ -1,5 +1,5 @@
 function winCheck(gameBoard) {
-	if (gameBoard.includes("black")) {
+	if (gameBoard.includes("white")) {
 		return "false"
 	}
 	else {

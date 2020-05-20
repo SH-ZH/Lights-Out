@@ -55,7 +55,7 @@ class Game extends React.Component {
 	}
 
 	instanceWin() {
-		const winBoard = Array(25).fill("white");
+		const winBoard = Array(25).fill("black");
 		const won = winCheck(winBoard);
 
 		this.setState({ 

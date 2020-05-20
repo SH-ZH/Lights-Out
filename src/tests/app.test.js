@@ -73,10 +73,10 @@ test('Test toggleSquare', () => {
 });
 
 test('Test winCheck', () => {
-    let notWhiteBoard = Array(25).fill("white");
-    let whiteBoard = Array(25).fill("white");
-    notWhiteBoard[0] = "black"; 
+    let blackBoard = Array(25).fill("black");
+    let notBlackBoard = Array(25).fill("black");
+    notBlackBoard[0] = "white"; 
 
-    expect(winCheck(whiteBoard)).toEqual("true");
-    expect(winCheck(notWhiteBoard)).toEqual("false");
+    expect(winCheck(notBlackBoard)).toEqual("false");
+    expect(winCheck(blackBoard)).toEqual("true");
 });
